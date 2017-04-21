@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>封装原生AJAX</title>
+	<style>
+		.main{
+			margin: 50px auto;
+			width: 500px;
+		}
+		.main div{
+			margin-bottom: 10px;
+			text-align: center;
+		}
+		.main div label{
+			width: 80px;
+			    display: inline-block;
+			    text-align: right;
+		}
+	</style>
+</head>
+<body>
+	<div class="main">
+		<form>
+			<div>
+				<label for="name">用户名：</label>
+				<input type="text" name="name" id="name">
+			</div>
+			<div>
+				<label for="password">密码：</label>
+				<input type="password" id="password">
+			</div>
+			<div id="submit">
+				<input type="button" value="注册">
+			</div>
+		</form>
+		<div id="showName"></div>
+	</div>
+	<script src="./ajax.js"></script>
+	<script type="text/javascript">
+		(function(){
+			var showName = document.getElementById('showName'),
+				button = document.getElementById('submit');
+			button.addEventListener('click',function(){
+				var name = document.getElementById('name').value,
+					password = document.getElementById('password').value,
+					param = {
+						name: name,
+						password: password
+					};
+				console.log(param);
+				ajax({
+					url: './index.php',
+					type: 'post',
+					param: param,
+					datatype: 'json',
+					async: true,
+					success: function(data){
+						var data = JSON.parse(data),
+							str = '恭喜'+data.name +'注册成功';
+						showName.innerHTML = str;
+					},
+					error: function(){
+						alert("注册失败");
+					}
+				})
+			})
+		})()
+		
+	</script>
+</body>
+</html>
