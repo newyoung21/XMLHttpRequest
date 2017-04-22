@@ -7,8 +7,8 @@
 		url: string,
 		type: get | post, 
 		param: {usrename:123},
-		datatype: json | xml,
-		async : true | false, (可选,默认为true)
+		datatype: json | xml | text | html |jsonp ,
+		async : true | false, (默认为true)
 		success: function(res),
 		error: function()
 	}
@@ -29,8 +29,15 @@
 			// do something ...
 		},
 		error: function(){
-			alert("注册失败");
+			alert("错误");
 		}
 	})
 
 ```
+
+### 目录
+
+	* index.html 是表单提交例子
+	* movecat.html 是跨域请求豆瓣电影API例子
+	* ajax.js 封装原生ajax
+

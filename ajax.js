@@ -34,29 +34,48 @@ function ajax(data) {
 	//把数组拼接成表单提交格式字符串
 	params = params.join('&');
 
-	//判断请求方法
-	
-	if (type == 'get') {
-		var url = data.url +"?"+params;
-		xhr.open(type, url, data.async);
-		xhr.send();
-	} else {
-		xhr.open(type, data.url, data.async);
-		xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-		xhr.send(params);
-	}
+	//判断是否是jsonp
+	if(data.datatype == 'jsonp'){
+		var callback = data.url.match(/callback=(\w+)/),
+			src = params ? (data.url+"&"+params) : data.url,
+			script = document.createElement('script');
+		window[callback[1]] = function(res){
+			console.log(res);
+			data.success(res)
+		}
+		script.src = src;
+		document.body.appendChild(script);
+	}else{
 
-	//链接服务器成功执行函数
+		//判断请求方法
+		if (type == 'get') {
+			var url = data.url +"&"+params;
+			
+			xhr.open(type, url, data.async);
+			xhr.send();
+		} else {
+			xhr.open(type, data.url, data.async);
+			xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+			xhr.send(params);
+		}
 
-	xhr.onreadystatechange = function(){
-		if(this.readyState == 4){
-			if(this.status == 200){
-				var res = (data.datatype == 'json'?this.responseText : this.responseXML);
-				data.success(res);
-			}else{
-				data.error();
+		//链接服务器成功执行函数
+
+		xhr.onreadystatechange = function(){
+			if(this.readyState == 4){
+				if(this.status == 200){
+					if(data.datatype == 'json' || data.datatype == 'html' || data.datatype == 'text'){
+						var res = this.responseText;
+					}else if(data.datatype == 'xml'){
+						var res = this.responseXML;
+					}
+					data.success(res);
+				}else{
+					data.error();
+				}
 			}
 		}
 	}
+	
 
 }

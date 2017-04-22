@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>跨域请求</title>
+</head>
+<body>
+	<table id="movecat"></table>
+	<script src="./ajax.js"></script>
+	<script>
+		window.onload = function(){
+			ajax({
+					url: 'http://api.douban.com/v2/movie/in_theaters?callback=myjsonp',
+					type: 'get',
+					param: {"count":5},
+					datatype: 'jsonp',
+					async: true,
+					success: function(res){
+						var table = document.getElementById('movecat');
+						res.subjects.forEach(function(val,index){
+							var tr = document.createElement('tr'),
+								td = document.createElement('td');
+							td.innerHTML = '<img src="'+val.images.medium+'" alt="" />';
+							tr.appendChild(td);
+							var td = document.createElement('td');
+							td.innerHTML = val.title;
+							tr.appendChild(td);
+							table.appendChild(tr);
+						})
+					},
+					error: function(){
+						//do something
+					}
+				})
+		}
+	</script>
+</body>
+</html>
