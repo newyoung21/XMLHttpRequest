@@ -9,6 +9,8 @@
 		param: {usrename:123},
 		datatype: json | xml | text | html |jsonp ,
 		async : true | false, (默认为true)
+		jsonp: 默认为callback,
+		jsonpCallback: 默认为你添加一个函数名 myjsonp1492847033628,
 		success: function(res),
 		error: function()
 	}

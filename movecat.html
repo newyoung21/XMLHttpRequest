@@ -10,11 +10,13 @@
 	<script>
 		window.onload = function(){
 			ajax({
-					url: 'http://api.douban.com/v2/movie/in_theaters?callback=myjsonp',
+					url: 'http://api.douban.com/v2/movie/in_theaters',
 					type: 'get',
 					param: {"count":5},
 					datatype: 'jsonp',
 					async: true,
+					jsonp: 'callback',
+					jsonpCallback: 'myjsonp',
 					success: function(res){
 						var table = document.getElementById('movecat');
 						res.subjects.forEach(function(val,index){

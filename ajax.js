@@ -6,6 +6,8 @@
 		param: {usrename:123},
 		datatype: json | xml,
 		async : true | false, (默认为true)
+		jsonp: callback,
+		jsonpCallback: 默认为你添加一个函数名，
 		success: function(res),
 		error: function()
 	}*/
@@ -36,10 +38,12 @@ function ajax(data) {
 
 	//判断是否是jsonp
 	if(data.datatype == 'jsonp'){
-		var callback = data.url.match(/callback=(\w+)/),
-			src = params ? (data.url+"&"+params) : data.url,
+		var jsonp = data.jsonp || 'callback',
+			jsonpCallback = data.jsonpCallback || 'myjsonp'+ new Date().getTime(),
+			src = data.url+"?"+params+"&"+jsonp+"="+jsonpCallback,
+			// src = params ? (data.url+"&"+params) : data.url,
 			script = document.createElement('script');
-		window[callback[1]] = function(res){
+		window[jsonpCallback] = function(res){
 			console.log(res);
 			data.success(res)
 		}
@@ -49,7 +53,7 @@ function ajax(data) {
 
 		//判断请求方法
 		if (type == 'get') {
-			var url = data.url +"&"+params;
+			var url = data.url +"?"+params;
 			
 			xhr.open(type, url, data.async);
 			xhr.send();
