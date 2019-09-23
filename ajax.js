@@ -69,7 +69,7 @@ function ajax(data) {
 			if(this.readyState == 4){
 				if(this.status == 200){
 					if(data.datatype == 'json' || data.datatype == 'html' || data.datatype == 'text'){
-						var res = this.responseText;
+						var res = this.response;
 					}else if(data.datatype == 'xml'){
 						var res = this.responseXML;
 					}
